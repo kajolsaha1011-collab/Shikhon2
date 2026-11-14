@@ -1,0 +1,8 @@
+{
+  "appId": "com.abhi.shikhon",
+  "appName": "Shikhon Vault",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
