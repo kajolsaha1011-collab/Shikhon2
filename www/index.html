@@ -440,6 +440,19 @@ load();$('grid').classList.add('intro');render();setTimeout(function(){$('grid')
 })();
 </script>
 <script>
+/* ব্যাকগ্রাউন্ড প্লেব্যাক (শুধু অ্যান্ড্রয়েড অ্যাপে): পেজে কোনো ভিডিও ফ্রেম থাকলে "ভিডিও চলছে" সার্ভিস চালু থাকে,
+   যাতে অ্যাপ মিনিমাইজ বা স্ক্রিন বন্ধ করলেও ভিডিও থামে না। ফ্রেম না থাকলে সার্ভিস বন্ধ হয়। */
+(function(){
+  var C=window.Capacitor;if(!C||!(C.isNativePlatform&&C.isNativePlatform()))return;
+  var K=(C.Plugins&&C.Plugins.KeepAlive)||(C.registerPlugin&&C.registerPlugin('KeepAlive'));if(!K)return;
+  var on=false,t;
+  function sync(){var has=!!document.querySelector('iframe');if(has===on)return;on=has;
+    try{var r=has?K.start():K.stop();if(r&&r.catch)r.catch(function(){})}catch(e){}}
+  new MutationObserver(function(){clearTimeout(t);t=setTimeout(sync,300)}).observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)sync()});
+})();
+</script>
+<script>
 if('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !window.Capacitor){
   window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
 }
